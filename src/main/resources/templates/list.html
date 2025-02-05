@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>게시판</title>
+</head>
+<body>
+    <h1>게시글 목록</h1>
+    <ul>
+        <li th:each="board : ${boards}">
+            <a th:href="@{/board/{id}(id=${board.id})}">
+                <span th:text="${board.title}"></span>
+            </a>
+        </li>
+    </ul>
+</body>
+</html>
