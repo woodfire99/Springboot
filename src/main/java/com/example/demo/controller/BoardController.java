@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
@@ -15,28 +16,25 @@ public class BoardController {
 		this.boardService = boardService;
 	}
 	
+	@Operation(summary = "게시글 목록 조회", description = "모든 게시글을 조회합니다.")
 	@GetMapping
 	public List<Board> getAllBoards(){
 		return boardService.getAllBoards();
 	}
 	
+	@Operation(summary = "게시글 찾기", description = "찾아서 조회합니다.")
 	@GetMapping("/{id}")
 	public Optional<Board> getBoardById(@PathVariable Long id){
 		return boardService.getBoardById(id);
 	}
 	
+	@Operation(summary = "게시글 저장", description = "게시물 저장")
 	@PostMapping
 	public Board saveBoard(@RequestBody Board board) {
-	    // 🚀 클라이언트에서 받은 데이터 확인
-	    System.out.println("📌 [Debug] 받은 데이터:");
-	    System.out.println("Title: " + board.getTitle());
-	    System.out.println("Content: " + board.getContent());
-	    System.out.println("Writer: " + board.getWriter());
-
 	    return boardService.saveBoard(board);
 	}
 
-	
+	@Operation(summary = "게시글 삭제", description = "게시물 삭제")
 	@DeleteMapping("/{id}")
 	public void deleteBoard(@PathVariable Long id) {
 		boardService.deleteBoard(id);

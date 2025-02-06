@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")  // MariaDB 드라이버 (MySQL 대체 가능)
     implementation("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")  
 }
 
 tasks.withType<Test> {
