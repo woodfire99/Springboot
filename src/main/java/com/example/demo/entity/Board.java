@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,10 +16,13 @@ public class Board {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+//	@JsonProperty("title")
 	private String title;
 	
+//	@JsonProperty("content")
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
+//	@JsonProperty("writer")
 	private String writer;
 }

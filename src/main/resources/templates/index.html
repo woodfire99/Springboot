@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+	<script>
+	    document.addEventListener("DOMContentLoaded", function() {
+	        loadPosts();
+	    });
+
+	    function loadPosts() {
+	        fetch("http://localhost:8080/api/boards")  // <-- 여기에 /api 추가
+	            .then(response => response.json())
+	            .then(posts => {
+	                const postList = document.getElementById("post-list");
+	                postList.innerHTML = "";
+
+	                posts.forEach(post => {
+	                    const li = document.createElement("li");
+	                    li.innerHTML = `<a href="detail.html?id=${post.id}">${post.title}</a>`;
+	                    postList.appendChild(li);
+	                });
+	            })
+	            .catch(error => console.error("Error loading posts:", error));
+	    }
+
+		function createPost() {
+		    const title = document.getElementById("title").value;
+		    const content = document.getElementById("content").value;
+		    const writer = document.getElementById("writer").value; // writer 추가
+
+		    fetch("http://localhost:8080/api/boards", {
+		        method: "POST",
+		        headers: {
+		            "Content-Type": "application/json"
+		        },
+		        body: JSON.stringify({ title, content, writer }) // writer 포함
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+		        alert("게시글이 등록되었습니다!");
+		        document.getElementById("title").value = "";
+		        document.getElementById("content").value = "";
+		        document.getElementById("writer").value = ""; // writer도 초기화
+		        loadPosts();
+		    })
+		    .catch(error => console.error("Error:", error));
+		}
+
+	</script>
+
+</head>
+<body>
+    <h1>게시판</h1>
+    
+    <h2>게시글 작성</h2>
+    <input type="text" id="title" placeholder="제목">
+	<input type="text" id="writer" placeholder="작성자">
+    <textarea id="content" placeholder="내용"></textarea>
+    <button onclick="createPost()">등록</button>
+
+    <h2>게시글 목록</h2>
+    <ul id="post-list"></ul>
+</body>
+</html>

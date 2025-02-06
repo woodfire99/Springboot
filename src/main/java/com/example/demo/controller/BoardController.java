@@ -27,8 +27,15 @@ public class BoardController {
 	
 	@PostMapping
 	public Board saveBoard(@RequestBody Board board) {
-		return boardService.saveBoard(board);
+	    // 🚀 클라이언트에서 받은 데이터 확인
+	    System.out.println("📌 [Debug] 받은 데이터:");
+	    System.out.println("Title: " + board.getTitle());
+	    System.out.println("Content: " + board.getContent());
+	    System.out.println("Writer: " + board.getWriter());
+
+	    return boardService.saveBoard(board);
 	}
+
 	
 	@DeleteMapping("/{id}")
 	public void deleteBoard(@PathVariable Long id) {
