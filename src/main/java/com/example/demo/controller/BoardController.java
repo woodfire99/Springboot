@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 import com.example.demo.entity.Board;
 import com.example.demo.service.BoardService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +38,16 @@ public class BoardController {
 
 	@Operation(summary = "게시글 삭제", description = "게시물 삭제")
 	@DeleteMapping("/{id}")
-	public void deleteBoard(@PathVariable Long id) {
+	public void deleteBoard(@PathVariable("id") Long id) {
 		boardService.deleteBoard(id);
 	}
+	
+	 @PutMapping("/{id}")
+    public ResponseEntity<Board> updateBoard(
+            @PathVariable("id") Long id, 
+            @RequestBody Board boardDetails) {
+
+        Board updatedBoard = boardService.updateBoard(id, boardDetails);
+        return ResponseEntity.ok(updatedBoard);
+    }
 }

@@ -10,20 +10,58 @@
 	    });
 
 	    function loadPosts() {
-	        fetch("http://localhost:8080/api/boards")  // <-- 여기에 /api 추가
-	            .then(response => response.json())
-	            .then(posts => {
-	                const postList = document.getElementById("post-list");
-	                postList.innerHTML = "";
+    fetch("http://localhost:8080/api/boards")  // API에서 게시글 목록 가져오기
+        .then(response => response.json())
+        .then(posts => {
+            const postList = document.getElementById("post-list");
+            postList.innerHTML = "";
 
-	                posts.forEach(post => {
-	                    const li = document.createElement("li");
-	                    li.innerHTML = `<a href="detail.html?id=${post.id}">${post.title}</a>`;
-	                    postList.appendChild(li);
-	                });
-	            })
-	            .catch(error => console.error("Error loading posts:", error));
-	    }
+            posts.forEach(post => {
+                const li = document.createElement("li");
+
+                // 게시글 제목 (상세보기 링크)
+                const titleLink = document.createElement("a");
+                titleLink.href = `detail.html?id=${post.id}`;
+                titleLink.textContent = post.title;
+
+                // 삭제 버튼
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "삭제";
+                deleteButton.onclick = () => deletePost(post.id);
+
+                // 수정 버튼
+                const editButton = document.createElement("button");
+                editButton.textContent = "수정";
+                editButton.onclick = () => editPost(post.id);
+
+                // 요소 추가
+                li.appendChild(titleLink);
+                li.appendChild(editButton);
+                li.appendChild(deleteButton);
+                postList.appendChild(li);
+            });
+        })
+        .catch(error => console.error("Error loading posts:", error));
+}
+
+		// 게시글 삭제 함수
+		function deletePost(postId) {
+			if (confirm("정말 삭제하시겠습니까?")) {
+				fetch(`http://localhost:8080/api/boards/${postId}`, {
+					method: "DELETE"
+				})
+				.then(() => {
+					alert("게시글이 삭제되었습니다.");
+					loadPosts(); // 목록 다시 불러오기
+				})
+				.catch(error => console.error("Error deleting post:", error));
+			}
+		}
+
+		// 게시글 수정 함수 (수정 페이지로 이동)
+		function editPost(postId) {
+			window.location.href = `edit.html?id=${postId}`;
+		}
 
 		function createPost() {
 		    const title = document.getElementById("title").value;
