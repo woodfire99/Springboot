@@ -26,7 +26,7 @@ public class BoardController {
 	
 	@Operation(summary = "게시글 찾기", description = "찾아서 조회합니다.")
 	@GetMapping("/{id}")
-	public Optional<Board> getBoardById(@PathVariable Long id){
+	public Optional<Board> getBoardById(@PathVariable("id") Long id){
 		return boardService.getBoardById(id);
 	}
 	
@@ -46,7 +46,6 @@ public class BoardController {
     public ResponseEntity<Board> updateBoard(
             @PathVariable("id") Long id, 
             @RequestBody Board boardDetails) {
-
         Board updatedBoard = boardService.updateBoard(id, boardDetails);
         return ResponseEntity.ok(updatedBoard);
     }
