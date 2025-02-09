@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f6fa;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: #555;
+    font-size: 1.5rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#post-form {
+    width: 45%;
+    text-align: left;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 10px 0;
+    display: block;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#post-list {
+    list-style: none;
+    padding: 0;
+    width: 45%;
+}
+/* 게시글 목록 스타일 */
+#post-list li {
+	width : 500px;
+    display: flex;
+    justify-content: space-between; /* 제목과 버튼을 양쪽 끝으로 배치 */
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 스타일 */
+#post-list li .title {
+    flex: 1; /* 제목이 왼쪽에 고정 */
+    text-align: left;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* 버튼 컨테이너 */
+#post-list li .actions {
+    display: flex;
+    gap: 10px; /* 버튼 사이 간격 */
+}
+
+/* 버튼 스타일 */
+#post-list li .actions button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#post-list li .actions button:hover {
+    background-color: #0056b3;
+}
+
+

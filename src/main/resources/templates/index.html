@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+	<link rel="stylesheet" href="/css/index.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
@@ -10,95 +11,111 @@
 	    });
 
 	    function loadPosts() {
-    fetch("http://localhost:8080/api/boards")  // API에서 게시글 목록 가져오기
-        .then(response => response.json())
-        .then(posts => {
-            const postList = document.getElementById("post-list");
-            postList.innerHTML = "";
+	        fetch("http://localhost:8080/api/boards")  // API에서 게시글 목록 가져오기
+	            .then(response => response.json())
+	            .then(posts => {
+	                const postList = document.getElementById("post-list");
+	                postList.innerHTML = "";
 
-            posts.forEach(post => {
-                const li = document.createElement("li");
+	                posts.forEach(post => {
+	                    const li = document.createElement("li");
+	                    li.classList.add("post-item");
 
-                // 게시글 제목 (상세보기 링크)
-                const titleLink = document.createElement("a");
-                titleLink.href = `detail.html?id=${post.id}`;
-                titleLink.textContent = post.title;
+	                    // 게시글 제목 (상세보기 링크)
+	                    const titleLink = document.createElement("a");
+	                    titleLink.href = `detail.html?id=${post.id}`;
+	                    titleLink.textContent = post.title;
+	                    titleLink.classList.add("title");
 
-                // 삭제 버튼
-                const deleteButton = document.createElement("button");
-                deleteButton.textContent = "삭제";
-                deleteButton.onclick = () => deletePost(post.id);
+	                    // 버튼 컨테이너
+	                    const buttonContainer = document.createElement("div");
+	                    buttonContainer.classList.add("actions");
 
-                // 수정 버튼
-                const editButton = document.createElement("button");
-                editButton.textContent = "수정";
-                editButton.onclick = () => editPost(post.id);
+	                    // 삭제 버튼
+	                    const deleteButton = document.createElement("button");
+	                    deleteButton.textContent = "삭제";
+	                    deleteButton.onclick = () => deletePost(post.id);
 
-                // 요소 추가
-                li.appendChild(titleLink);
-                li.appendChild(editButton);
-                li.appendChild(deleteButton);
-                postList.appendChild(li);
-            });
-        })
-        .catch(error => console.error("Error loading posts:", error));
-}
+	                    // 수정 버튼
+	                    const editButton = document.createElement("button");
+	                    editButton.textContent = "수정";
+	                    editButton.onclick = () => editPost(post.id);
 
-		// 게시글 삭제 함수
-		function deletePost(postId) {
-			if (confirm("정말 삭제하시겠습니까?")) {
-				fetch(`http://localhost:8080/api/boards/${postId}`, {
-					method: "DELETE"
-				})
-				.then(() => {
-					alert("게시글이 삭제되었습니다.");
-					loadPosts(); // 목록 다시 불러오기
-				})
-				.catch(error => console.error("Error deleting post:", error));
-			}
-		}
+	                    // 버튼 추가
+	                    buttonContainer.appendChild(editButton);
+	                    buttonContainer.appendChild(deleteButton);
 
-		// 게시글 수정 함수 (수정 페이지로 이동)
-		function editPost(postId) {
-			window.location.href = `edit.html?id=${postId}`;
-		}
+	                    // 요소 추가
+	                    li.appendChild(titleLink);
+	                    li.appendChild(buttonContainer);
+	                    postList.appendChild(li);
+	                });
+	            })
+	            .catch(error => console.error("Error loading posts:", error));
+	    }
 
-		function createPost() {
-		    const title = document.getElementById("title").value;
-		    const content = document.getElementById("content").value;
-		    const writer = document.getElementById("writer").value; // writer 추가
+	    // 게시글 삭제 함수
+	    function deletePost(postId) {
+	        if (confirm("정말 삭제하시겠습니까?")) {
+	            fetch(`http://localhost:8080/api/boards/${postId}`, {
+	                method: "DELETE"
+	            })
+	            .then(() => {
+	                alert("게시글이 삭제되었습니다.");
+	                loadPosts(); // 목록 다시 불러오기
+	            })
+	            .catch(error => console.error("Error deleting post:", error));
+	        }
+	    }
 
-		    fetch("http://localhost:8080/api/boards", {
-		        method: "POST",
-		        headers: {
-		            "Content-Type": "application/json"
-		        },
-		        body: JSON.stringify({ title, content, writer }) // writer 포함
-		    })
-		    .then(response => response.json())
-		    .then(data => {
-		        alert("게시글이 등록되었습니다!");
-		        document.getElementById("title").value = "";
-		        document.getElementById("content").value = "";
-		        document.getElementById("writer").value = ""; // writer도 초기화
-		        loadPosts();
-		    })
-		    .catch(error => console.error("Error:", error));
-		}
+	    // 게시글 수정 함수 (수정 페이지로 이동)
+	    function editPost(postId) {
+	        window.location.href = `edit.html?id=${postId}`;
+	    }
 
+	    // 게시글 등록 함수
+	    function createPost() {
+	        const title = document.getElementById("title").value;
+	        const content = document.getElementById("content").value;
+	        const writer = document.getElementById("writer").value;
+
+	        fetch("http://localhost:8080/api/boards", {
+	            method: "POST",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            body: JSON.stringify({ title, content, writer })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            alert("게시글이 등록되었습니다!");
+	            document.getElementById("title").value = "";
+	            document.getElementById("content").value = "";
+	            document.getElementById("writer").value = "";
+	            loadPosts();
+	        })
+	        .catch(error => console.error("Error:", error));
+	    }
 	</script>
-
 </head>
 <body>
     <h1>게시판</h1>
     
-    <h2>게시글 작성</h2>
-    <input type="text" id="title" placeholder="제목">
-	<input type="text" id="writer" placeholder="작성자">
-    <textarea id="content" placeholder="내용"></textarea>
-    <button onclick="createPost()">등록</button>
+	<div class="container">
+	    <!-- 게시글 작성 -->
+	    <div id="post-form">
+	        <h2>게시글 작성</h2>
+	        <input type="text" id="title" placeholder="제목">
+	        <input type="text" id="writer" placeholder="작성자">
+	        <textarea id="content" placeholder="내용"></textarea>
+	        <button onclick="createPost()">등록</button>
+	    </div>
 
-    <h2>게시글 목록</h2>
-    <ul id="post-list"></ul>
+	    <!-- 게시글 목록 -->
+	    <div id="post-list-container">
+	        <h2>게시글 목록</h2>
+	        <ul id="post-list"></ul>
+	    </div>
+	</div>
 </body>
 </html>
